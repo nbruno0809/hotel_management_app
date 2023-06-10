@@ -1,1 +1,1 @@
-# hotel_management_app
+# Hotel Management
