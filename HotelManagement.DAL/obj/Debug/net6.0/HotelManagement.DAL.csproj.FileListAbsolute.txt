@@ -1,0 +1,12 @@
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\bin\Debug\net6.0\HotelManagement.DAL.deps.json
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\bin\Debug\net6.0\HotelManagement.DAL.dll
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\bin\Debug\net6.0\HotelManagement.DAL.pdb
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\HotelManagement.DAL.csproj.AssemblyReference.cache
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\HotelManagement.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\HotelManagement.DAL.AssemblyInfoInputs.cache
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\HotelManagement.DAL.AssemblyInfo.cs
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\HotelManagement.DAL.csproj.CoreCompileInputs.cache
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\HotelManagement.DAL.dll
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\refint\HotelManagement.DAL.dll
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\HotelManagement.DAL.pdb
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelManagement.DAL\obj\Debug\net6.0\ref\HotelManagement.DAL.dll

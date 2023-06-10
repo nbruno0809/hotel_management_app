@@ -1,0 +1,6 @@
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelDB\bin\Debug\HotelDB.dacpac
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelDB\bin\Debug\HotelDB.dll
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelDB\bin\Debug\HotelDB.pdb
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelDB\obj\Debug\HotelDB.sqlproj.AssemblyReference.cache
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelDB\obj\Debug\HotelDB.dll
+C:\Users\nbrun\Desktop\WebPortalok\HAZI\HotelManagement\HotelDB\obj\Debug\HotelDB.pdb

@@ -1,0 +1,54 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row w-100 h-100 overflow-hidden">
+    <div class="col-md-6 vstack gap-2">
+        <h2 class="ps-3 ">@ViewData["Title"]</h2>
+        <form id="profile-form" method="post" class="gap-2 vstack p-3" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Username" class="form-label">E-mail</label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+    <div class="col-md-6 vstack gap-2 overflow-auto">
+        <h2>Your reservations (@Model.Reservations.Count())</h2>
+        @foreach (var reservation in Model.Reservations)
+        {
+            <div class="card p-3 w-50">
+                <h6>Arrival: <strong>@reservation.From.ToShortDateString()</strong></h6>
+                <h6>Departure: <strong>@reservation.To.ToShortDateString()</strong></h6>
+                <h6>Rooms:</h6>
+                <p>@Model.roomsToString(reservation.AmountOfRoomTypes)</p>
+                <h6>Extras:</h6>
+                <p>@(reservation.Extras.Count>=1 ? string.Join(", ",reservation.Extras) : "-")</p>
+                @{
+                    if (reservation.From > DateTime.Now.AddDays(1))
+                    {
+                        <form method="post" asp-page-handler="Cancel">
+                            <input type="hidden" name="id" value=@reservation.Id />
+                            <button type="submit" class="btn btn-outline-danger btn-sm" >Cancel</button>
+                        </form>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

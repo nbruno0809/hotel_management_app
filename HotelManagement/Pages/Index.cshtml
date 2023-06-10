@@ -1,0 +1,174 @@
+﻿@page
+@using HotelManagement.DAL.Entities;
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@{
+    if (Model.ModelState.ErrorCount >= 1)
+    {
+        <div class="alert-danger p-3">
+            <span class="text-danger">@Model.ModelState.Values.First().Errors.First().ErrorMessage</span>
+        </div>
+    }
+}
+<div class="text-center row p-3 w-100">
+    <div class="col-lg-9" >
+        <h1 class="display-4">Welcome</h1>
+        @*Dátum választás*@
+        <form method="post" asp-page-handler="DateSelect">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row align-items-center justify-content-center">
+
+                <div class="form-floating col-3">
+                    <input asp-for="ReservationPlan.StartDate" class="form-control" type="date" aria-required="true" />
+                    <label asp-for="ReservationPlan.StartDate" class="form-label p-3">Check in</label>
+                </div>
+                <div class="form-floating col-3">
+                    <input asp-for="ReservationPlan.EndDate" class="form-control" type="date" aria-required="true" />
+                    <label asp-for="ReservationPlan.EndDate" class="form-label p-3">Checkout</label>
+                </div>
+                <div class="form-floating hstack col justify-content-start col-3">
+                    <button type="submit" class="btn btn-dark">
+                        See available options
+                    </button>
+                </div>
+                <span asp-validation-for="ReservationPlan" class="text-danger"></span>
+            </div>
+        </form>
+
+       @* Elérhető szobák*@
+        <div class="hstack w-100 ">
+            <div class="vstack gap-2 w-50 m-3">
+                @foreach (var rta in Model.roomTypesAvailabilities)
+                {
+                    <div class="card hstack p-3 w-100">
+                        <div class="w-50">
+                            @{
+                                if(rta.RoomType.ImgPath == null)
+                                {
+                                    <div class="card-img bg-gradient w-100 h-100">No Image</div>
+                                }
+                                else
+                                {
+                                    <img src=@rta.RoomType.ImgPath class="card-img" />
+                                }
+                            }
+                        </div>
+                        <div class="align-items-center align-content-start p-3">
+                            <h3>@rta.RoomType.Name</h3>
+                            <p>@rta.RoomType.Description</p>
+                            <h6>Number of beds: @rta.RoomType.NumberOfBeds</h6>
+                            <h6>Price/night: @rta.RoomType.PricePerNight $</h6>
+                            <h6>Available: @rta.AvailableCount</h6>
+                        </div>
+                        <div class="vstack p-5 justify-content-center">
+                           @* Szoba hozzáadás/Törlés*@
+                            <form method="post">
+                                <input type="hidden" name="typeId" value=@rta.RoomType.Id />
+                                <button class="btn btn-outline-dark" asp-page-handler="AddRoom">+</button>
+                                <h6>@Model.ReservationPlan.AmountOfRoomTypes.SingleOrDefault(x=>x.TypeId==rta.RoomType.Id)?.Amount</h6>
+                                <button class="btn btn-outline-dark" asp-page-handler="RemoveRoom">-</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+            @{
+                if (Model.roomTypesAvailabilities != null && Model.roomTypesAvailabilities.Count()>0)
+                {  /* Extrák hozzáadása*/
+                    <form class="vstack card w-25 m-3 " method="post" asp-page-handler="Extra">
+                        <div class="vstack flex-wrap gap-4 align-items-start card-body flex-grow-0">
+
+                            @foreach (var e in Model.GetExtrasAsync().Result)
+                            {
+                                <div class="form-switch form-check">
+                                    <input 
+                                        type="checkbox" 
+                                        name="SelectedExtras" 
+                                        value=@e.Id 
+                                        class="form-check-input"
+                                         @(Model.ReservationPlan.ExtraIds.Contains(e.Id) ? "checked" : "")/>
+                                    @e.Name
+                                    @e.Price€
+                                </div>
+                            }
+
+
+                        </div>
+                        <div ><button type="submit" class="btn btn-dark">Save extras</button></div>
+                    </form>
+                }
+            }
+        </div>
+
+    </div>
+    @{
+        if (Model.ReservationPlan != null)
+        {
+            //Foglalási tervezet
+            <div class="col-lg-3 vstack text-start p-4 border-start">
+                <h2>Your booking</h2>
+                <h4>Rooms:</h4>
+                <ul>
+                @*Kiválasztott szobák *@
+                @foreach (var aort in Model.ReservationPlan.AmountOfRoomTypes )
+                {
+                    <li>
+                        @aort.TypeName <strong>@(aort.Amount+"x")</strong>
+                    </li>
+                }
+                </ul>
+                <h4>Extras:</h4>
+                <ul>
+                    @*Kiválasztott extrák *@
+                    @foreach (var e in Model.ReservationPlan.ExtraIds)
+                    {
+                        <li>
+                            @(Model.GetExtrasAsync().Result.First(x=>x.Id == e).Name)
+                        </li>
+                    }
+                </ul>
+                <h4>Total Price: @Model.reservationManager.CalculatePrice(Model.ReservationPlan).Result EUR</h4>
+                @*Pénznem váltás*@
+                <div>
+                    <form method="post" asp-page-handler="Currency" class="hstack align-items-center flex-wrap gap-2">
+                        Check price in
+                        <select asp-for="TargetCurrencyCode" class="form-select form-select" style="max-width: 80pt">
+                            @foreach (var code in Model.GetCodes())
+                            {
+                                <option value=@code>@code</option>
+                            }
+
+                        </select>
+                        <button type="submit" class="btn btn-outline-dark">See!</button>
+                    </form>
+                    @(Model.CurrValue==null ? "-" : Model.CurrValue+" "+Model.TargetCurrencyCode)
+                </div>
+
+                @{
+                    //Ha be van jelentkezve, user infok és foglalás
+                    if(Model.signInManager.IsSignedIn(User))
+                    {
+                        <div>
+                            <h4>Your informations:</h4>
+                            <ul>
+                                <li>First name: @Model.userManager.GetUserAsync(User).Result.FirstName</li>
+                                <li>Last name: @Model.userManager.GetUserAsync(User).Result.LastName</li>
+                                <li>E-mail: @Model.userManager.GetUserAsync(User).Result.Email</li>
+                            </ul>
+                            <form method="post" asp-page-handler="Book">
+                                <button type="submit" class="btn btn-dark">Finalize booking</button>
+                            </form>
+                        </div>
+                    }
+                }
+
+            </div>
+        }
+    }
+    
+</div>
+
+

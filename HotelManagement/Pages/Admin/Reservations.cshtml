@@ -1,0 +1,40 @@
+﻿@page
+@model HotelManagement.Pages.ReservationsModel
+@{
+}
+<div class="container">
+	<div class="w-100 align-content-start py-3">
+		<form class="row align-items-center justify-content-start" method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-floating col-md-3">
+				<input asp-for="SearchString" class="form-control" placeholder="Guest Name.."/>
+				<label asp-for="SearchString">Name on the reservation</label>
+				<span asp-validation-for="SearchString" class="text-danger"></span>
+			</div>
+			<div class="col-md-1 d-flex justify-content-center"><strong>between</strong></div>
+			<div class="form-floating col-md-2">
+				<input asp-for="From" class="form-control" type="date" />
+				<span asp-validation-for="From" class="text-danger"></span>
+			</div>
+			<div class="col-md-1 d-flex justify-content-center"><strong>and</strong></div>
+			<div class="form-floating col-md-2">
+				<input asp-for="To" class="form-control" type="date" />
+				<span asp-validation-for="To" class="text-danger"></span>
+			</div>
+			<button type="submit" class="btn btn-dark col-md-1">Search</button>
+		</form>
+	</div>
+	<div class="row hstack w-100 gap-lg-3 gap-2"> 
+		@foreach (var res in Model.Reservations)
+		{
+			<div class="card p-2 col-md-6 col-lg-4 col-xl-3 col-xxl-2 ">
+				<div>From: @res.From.ToShortDateString()</div>
+				<div>To: @res.To.ToShortDateString()</div>
+				<div>Name: <strong>@res.User.FirstName @res.User.LastName</strong></div>
+				<div>Rooms: @(string.Join(", ", res.Rooms.Select(r=>r.Number)))</div>
+				<div>Price: @res.Price€</div>
+				<div>Reservation was made on @res.DateOfReservation</div>
+			</div>
+		}
+	</div>
+</div>

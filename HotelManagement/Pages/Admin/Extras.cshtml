@@ -1,0 +1,62 @@
+﻿@page
+@model HotelManagement.Pages.ExtrasModel
+@{
+}
+
+<div class="container w-100">
+	@{
+		if (Model.ModelState.ErrorCount >= 1)
+		{
+			<div class="alert-danger p-3">
+				<span class="text-danger">@Model.ModelState.Values.First().Errors.First().ErrorMessage</span>
+			</div>
+		}
+	}
+	<div class="row">
+		<div class="col-lg-6 vstack gap-2">
+			@foreach (var e in Model.Extras)
+			{
+				<div class="card p-3 hstack">
+					<div>
+						<h4>@e.Name</h4>
+						<h6>@e.Price€</h6>
+						<h6>Added to reservation @e.Reservations.Count time(s)</h6>
+						<p>@e.Description</p>
+					</div>
+					@{
+						if (e.Reservations.Count()==0)
+						{	
+							<form asp-page-handler="Delete" method="post" class="vstack justify-content-end align-items-end">
+								<input type="hidden" value="@e.Id" name="id" />
+								<button type="submit" class="btn btn-danger">Delete</button>
+							</form>
+						}
+					}
+				</div>
+			}
+		</div>
+
+		<div class="col-lg-6">
+			<form class="vstack gap-2" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-floating">
+					<input asp-for="NewExtra.Name" class="form-control" aria-required="true" />
+					<label>Name</label>
+					<span asp-validation-for="NewExtra.Name" class="text-danger"></span>
+				</div>
+				<div class="form-floating">
+					<input asp-for="NewExtra.Description" class="form-control" aria-required="true" />
+					<label>Description</label>
+					<span asp-validation-for="NewExtra.Description" class="text-danger"></span>
+				</div>
+				<div class="form-floating">
+					<input asp-for="NewExtra.Price" class="form-control" type="number" aria-required="true" />
+					<label >Price</label>
+					<span asp-validation-for="NewExtra.Price" class="text-danger"></span>
+				</div>
+				<button type="submit" class="btn btn-dark">Add new extra</button>
+			</form>
+		</div>
+	</div>
+</div>
+

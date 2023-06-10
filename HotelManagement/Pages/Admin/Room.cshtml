@@ -1,0 +1,65 @@
+﻿@page "{id}"
+@model HotelManagement.Pages.RoomModel
+@{
+}
+<div><a asp-page="/Admin/Rooms" class="link-dark btn border-dark mb-4">Back to room types</a></div>
+<div class="container w-100">
+	@{
+		if (Model.ModelState.ErrorCount >= 1)
+		{
+			<div class="alert-danger p-3">
+				<span class="text-danger">@Model.ModelState.Values.First().Errors.First().ErrorMessage</span>
+			</div>
+		}
+	}
+	<div class="row">
+		
+		<div class="col-lg-6 vstack gap-2">
+			<h1>@(Model.Type == null ? "" : Model.Type.Name)</h1>
+			@foreach (var room in Model.Rooms)
+			{
+				<div class="card p-3 hstack">
+					<div>
+						<h4>@room.Number</h4>
+						<h6>@(room.Active ? "Active" :"Inactive")</h6>
+						<h6>Currently: @(room.CurrentlyFree ? "Free" : room.CurrentGuest)</h6>
+						<h6>Future reservations: @room.FutureReservationCount</h6>
+					</div>
+					<div class="vstack justify-content-end align-items-end gap-2">
+						@{
+							if (room.Active)
+							{
+								<form method="post" asp-page-handler="Inactivate">
+									<input type="hidden" name="id" value=@room.Id />
+									<button type="submit" class=" btn btn-secondary">Inactivate</button>
+								</form>
+							} else
+							{
+								<form method="post" asp-page-handler="Activate">
+									<input type="hidden" name="id" value=@room.Id />
+									<button type="submit" class=" btn btn-success">Activate</button>
+								</form>
+							}							
+						}
+						<form method="post" asp-page-handler="Delete">
+							<input type="hidden" name="id" value=@room.Id />
+							<button type="submit" @(room.FutureReservationCount>0? "disabled" : "") class=" btn btn-danger">Delete</button>
+						</form>
+					</div>
+				</div>
+			}
+		</div>
+
+		<div class="col-lg-6">
+			<form class="vstack gap-2" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-floating">
+					<input asp-for="RoomNumber" class="form-control" aria-required="true" />
+					<label asp-for="RoomNumber">Room number</label>
+					<span asp-validation-for="RoomNumber" class="text-danger"></span>
+				</div>
+				<button type="submit" class="btn btn-dark">Add new room</button>
+			</form>
+		</div>
+	</div>
+</div>
