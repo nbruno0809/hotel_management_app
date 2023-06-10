@@ -1,6 +1,6 @@
 # Hotel Management
 
-Mande with Razor Pages and Entity Framework
+Made with ASP.NET, Razor Pages and Entity Framework, using AnyAPI for currency exchange
 
 ![image](https://github.com/nbruno0809/hotel_management_app/assets/79459734/335b4aee-da1a-4b84-8b00-72eebf2f830d)
 
